@@ -75,7 +75,7 @@
         .v-container { width: 100%; padding-bottom: 56.25%; height: 0; position: relative; }
         .v-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-/* --- SCREENSHOT SLIDER STYLES (UPDATED) --- */
+/* --- SCREENSHOT SLIDER STYLES (GAP THAPIEKO) --- */
 .slider-wrapper { 
     width: 100%; 
     position: relative; 
@@ -83,44 +83,37 @@
     border-radius: 22px; 
     border: 1px solid var(--border); 
     background: var(--card); 
-    margin-bottom: 10px;
+    margin-bottom: 20px; /* Slider muni gap */
 }
+
 .slider { 
     display: flex; 
-    /* Manual scroll enable gareko */
     overflow-x: auto; 
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    /* --- IMAGE BICH KO GAP YAHA --- */
+    gap: 12px; 
+    padding: 0 10px; /* Side ma thikka ko padding */
 }
-/* Scrollbar hide garne */
+
 .slider::-webkit-scrollbar { display: none; }
 
 .slider img { 
-    width: 100%; 
+    /* 100% rakhepachi gap khancha, tesaile calc use garne */
+    width: calc(100% - 20px); 
     flex-shrink: 0; 
     aspect-ratio: 16/9; 
     object-fit: cover; 
-    /* Scroll garda photo lai bich ma snap garne */
-    scroll-snap-align: start;
+    border-radius: 15px; /* Photo ko corner pani round banau ramro dekhincha */
+    scroll-snap-align: center; 
 }
+
 .dots-container { 
     display: flex; 
     justify-content: center; 
     gap: 8px; 
-    margin-bottom: 30px; 
-}
-.dot { 
-    width: 8px; 
-    height: 8px; 
-    background: rgba(255,255,255,0.2); 
-    border-radius: 50%; 
-    transition: 0.3s; 
-}
-.dot.active { 
-    background: var(--pink); 
-    width: 20px; 
-    border-radius: 10px; 
+    margin-bottom: 35px; /* Dots muni gap */
 }
 
         
