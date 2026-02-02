@@ -75,7 +75,7 @@
         .v-container { width: 100%; padding-bottom: 56.25%; height: 0; position: relative; }
         .v-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-/* --- SCREENSHOT SLIDER STYLES --- */
+/* --- SCREENSHOT SLIDER STYLES (UPDATED) --- */
 .slider-wrapper { 
     width: 100%; 
     position: relative; 
@@ -87,13 +87,22 @@
 }
 .slider { 
     display: flex; 
-    transition: transform 0.5s ease-in-out; 
+    /* Manual scroll enable gareko */
+    overflow-x: auto; 
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
+/* Scrollbar hide garne */
+.slider::-webkit-scrollbar { display: none; }
+
 .slider img { 
     width: 100%; 
     flex-shrink: 0; 
     aspect-ratio: 16/9; 
     object-fit: cover; 
+    /* Scroll garda photo lai bich ma snap garne */
+    scroll-snap-align: start;
 }
 .dots-container { 
     display: flex; 
@@ -113,6 +122,7 @@
     width: 20px; 
     border-radius: 10px; 
 }
+
         
         
         /* STEPS SECTION */
@@ -233,33 +243,44 @@ const dotsBox = document.getElementById('dots-content');
 
 if(game.slides && game.slides.length > 0) {
     game.slides.forEach((imgSrc, index) => {
-        // Image element banaune
         const img = document.createElement('img');
         img.src = imgSrc;
         sliderBox.appendChild(img);
         
-        // Dot element banaune
         const dot = document.createElement('div');
         dot.className = index === 0 ? 'dot active' : 'dot';
         dotsBox.appendChild(dot);
     });
 
-    // Auto Slide Logic (3 seconds)
+    // Manual scroll garda dots update garne
+    sliderBox.addEventListener('scroll', () => {
+        const index = Math.round(sliderBox.scrollLeft / sliderBox.offsetWidth);
+        updateDots(index);
+    });
+
+    function updateDots(index) {
+        document.querySelectorAll('.dot').forEach((d, i) => {
+            d.classList.toggle('active', i === index);
+        });
+    }
+
+    // Auto Slide Logic (User le scroll gareko bela auto-slide pause hunchha)
     let currentSlide = 0;
     setInterval(() => {
         currentSlide = (currentSlide + 1) % game.slides.length;
-        sliderBox.style.transform = `translateX(-${currentSlide * 100}%)`;
-        
-        // Dots update garne
-        document.querySelectorAll('.dot').forEach((d, i) => {
-            d.classList.toggle('active', i === currentSlide);
+        // ScrollLeft property use gareko manual scroll sanga milos bhanera
+        sliderBox.scrollTo({
+            left: currentSlide * sliderBox.offsetWidth,
+            behavior: 'smooth'
         });
-    }, 3000);
+    }, 4000); // 4 seconds ma slide hune
+
 } else {
-    // Yadi slide chaina vane tyo section nai hide garne
     document.querySelector('.slider-wrapper').style.display = 'none';
-    document.querySelectorAll('.section-title')[1].style.display = 'none'; // Screenshots title
+    const ssTitle = document.querySelectorAll('.section-title')[0]; 
+    if(ssTitle) ssTitle.style.display = 'none';
 }
+
         }          
             
     </script>
